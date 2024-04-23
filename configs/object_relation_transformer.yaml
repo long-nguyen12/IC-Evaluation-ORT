@@ -21,7 +21,7 @@ DATASET:
     DEV: features/flickr8k/val_flickr8k.json
     TEST: features/flickr8k/test_flickr8k.json
   FEATURE_PATH:
-    FEATURES: features/flickr8k/flickr8k_talk_box
+    FEATURES: features/flickr8k/feature_out
     SCENE_TEXT: null
     IMAGE: null
 
