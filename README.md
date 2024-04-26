@@ -1,1 +1,1 @@
-OpenViIC - Open Vietnamese Image Captioning
+# Image Captioning Experiements
