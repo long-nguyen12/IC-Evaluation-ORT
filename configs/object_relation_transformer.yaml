@@ -17,11 +17,11 @@ DATASET:
     USE_MAPPING: False
     PRETRAINED_LANGUAGE_MODEL: null
   JSON_PATH:
-    TRAIN: features/flickr8k/train_flickr8k.json
-    DEV: features/flickr8k/val_flickr8k.json
-    TEST: features/flickr8k/test_flickr8k.json
+    TRAIN: features/KTIVC/train_data.json
+    DEV: features/KTIVC/test_data.json
+    TEST: features\KTIVC\test_data.json
   FEATURE_PATH:
-    FEATURES: features/flickr8k/feature_out
+    FEATURES: features/KTIVC/KTIVC_feature_train
     SCENE_TEXT: null
     IMAGE: null
 
