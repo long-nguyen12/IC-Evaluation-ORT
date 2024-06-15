@@ -55,9 +55,14 @@ class FeatureDataset(data.Dataset):
         return feature
 
     def load_boxes(self, image_id: int) -> np.ndarray:
+        
         feature_file = os.path.join(self.image_features_path, f"{image_id}.npz")
-        boxes = np.load(feature_file, allow_pickle=True)["bbox"].copy()
-
+        features = np.load(feature_file, allow_pickle=True)
+        height, width = features['image_h'], features['image_w']
+        
+        boxes = features['bbox']
+        boxes = boxes/np.array([width, height, width,height])
+        boxes = np.clip(boxes, 0.0, 1.0, dtype=np.float32)
         return boxes
     @property
     def captions(self):
