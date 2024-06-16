@@ -19,7 +19,7 @@ DATASET:
   JSON_PATH:
     TRAIN: features/KTIVC/train_data.json
     DEV: features/KTIVC/test_data.json
-    TEST: features\KTIVC\test_data.json
+    TEST: features/KTIVC/test_data.json
   FEATURE_PATH:
     FEATURES: features/KTIVC/KTIVC_feature_train
     SCENE_TEXT: null
