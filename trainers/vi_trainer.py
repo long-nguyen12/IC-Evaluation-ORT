@@ -117,6 +117,9 @@ class viTrainer(BaseTrainer):
                 pbar.set_postfix(loss=running_loss / (it + 1))
                 pbar.update()
                 self.scheduler.step()
+                torch.cuda.synchronize()
+                
+        torch.cuda.empty_cache()
 
     def train_scst(self):
         # design especially for self-critical sequential learning
@@ -156,6 +159,9 @@ class viTrainer(BaseTrainer):
                 pbar.set_postfix(loss=running_loss / (it + 1), reward=running_reward / (it + 1),
                                 reward_baseline=running_reward_baseline / (it + 1))
                 pbar.update()
+                torch.cuda.synchronize()
+                
+        torch.cuda.empty_cache()
 
     def start(self):
         if os.path.isfile(os.path.join(self.checkpoint_path, "last_model.pth")):
