@@ -158,7 +158,7 @@ class DictionaryDataset(data.Dataset):
 
         visual = self.load_features(image_id)
         boxes = self.load_boxes(image_id)
-        return Instance(filename=filename, caption=captions, visual=visual, boxes=boxes)
+        return Instance(filename=filename, captions=captions, visual=visual, boxes=boxes)
         
 
 class ImageDataset(DictionaryDataset):
