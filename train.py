@@ -11,9 +11,9 @@ parser.add_argument("--config-file", type=str, default="configs/object_relation_
 
 args = parser.parse_args()
 
-config = get_config(args.config_file)
-
-trainer = build_trainer(config)
-trainer.start()
-# trainer.get_predictions(get_scores=config.TRAINING.GET_SCORES)
-logger.info("Trainer done.")
+if __name__ == "__main__":
+    config = get_config(args.config_file)
+    trainer = build_trainer(config)
+    trainer.start()
+    # trainer.get_predictions(get_scores=config.TRAINING.GET_SCORES)
+    logger.info("Trainer done.")

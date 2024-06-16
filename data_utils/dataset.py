@@ -13,7 +13,7 @@ from typing import Dict, List, Any
 class FeatureDataset(data.Dataset):
     def __init__(self, json_path: str, vocab, config) -> None:
         super().__init__()
-        with open(json_path, 'r') as file:
+        with open(json_path, 'r', encoding='utf-8') as file:
             json_data = json.load(file)
 
         # vocab
@@ -34,7 +34,7 @@ class FeatureDataset(data.Dataset):
                     annotation = {
                         "caption": preprocess_caption(ann["caption"], self.vocab.tokenizer),
                         "image_id": ann["image_id"],
-                        "filename": image["file_name"]
+                        "filename": image["filename"]
                     }
                     break
 
@@ -91,7 +91,7 @@ class FeatureDataset(data.Dataset):
 
 class DictionaryDataset(data.Dataset):
     def __init__(self, json_path: str, vocab, config) -> None:
-        with open(json_path, 'r') as file:
+        with open(json_path, 'r', encoding='utf-8') as file:
             json_data = json.load(file)
 
         # vocab
@@ -129,7 +129,7 @@ class DictionaryDataset(data.Dataset):
         filenames = {}
         for image in json_data["images"]:
             examples[image["id"]] = []
-            filenames[image["id"]] = image["file_name"]
+            filenames[image["id"]] = image["filename"]
 
         for ann in json_data["annotations"]:
             caption = preprocess_caption(ann["caption"], self.vocab.tokenizer)

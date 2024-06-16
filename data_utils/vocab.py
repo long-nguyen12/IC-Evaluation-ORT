@@ -88,7 +88,7 @@ class Vocab(object):
         self.output_cats = set()
         self.max_caption_length = 0
         for json_dir in json_dirs:
-            json_data = json.load(open(json_dir))
+            json_data = json.load(open(json_dir, encoding="utf-8"))
             for ann in json_data["annotations"]:
                 caption = preprocess_caption(ann["caption"], self.tokenizer)
                 self.freqs.update(caption)
