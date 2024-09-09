@@ -262,7 +262,7 @@ class IntegratedDecoderLayer(Module):
 class IntegratedDecoder(Module):
     "Generic N layer decoder with masking."
     def __init__(self, config, vocab):
-        super(Decoder, self).__init__()
+        super(IntegratedDecoder, self).__init__()
         
         self.d_model = config.D_MODEL
         self.max_len = vocab.max_caption_length
