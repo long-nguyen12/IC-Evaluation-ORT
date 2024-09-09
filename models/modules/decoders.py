@@ -20,8 +20,6 @@ class DecoderLayer(Module):
         self.self_attn = MultiHeadAttention(config.SELF_ATTENTION)
         self.enc_attn = MultiHeadAttention(config.ENC_ATTENTION)
         
-        self.cross_attn = MultiHeadAttention(config.CROSS_ATTENTION)
-        
         self.pwff = PositionWiseFeedForward(config.ENC_ATTENTION)
 
     def forward(self, queries, keys, values, self_padding_mask, self_attention_mask, enc_attention_mask, **kwargs):
@@ -237,7 +235,7 @@ class AdaptiveDecoder(Module):
 
 class IntegratedDecoderLayer(Module):
     def __init__(self, config):
-        super(DecoderLayer, self).__init__()
+        super(IntegratedDecoderLayer, self).__init__()
 
         self.self_attn = MultiHeadAttention(config.SELF_ATTENTION)
         self.region_attn = MultiHeadAttention(config.SELF_ATTENTION)
