@@ -134,7 +134,7 @@ class BaseTrainer:
     def lambda_lr(self, step):
         warm_up = self.warmup
         step += 1
-        return (self.model.encoder.d_model**-0.5) * min(
+        return (self.model.decoder.d_model**-0.5) * min(
             step**-0.5, step * warm_up**-1.5
         )
 
