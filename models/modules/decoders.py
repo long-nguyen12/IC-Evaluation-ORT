@@ -278,6 +278,7 @@ class IntegratedDecoder(Module):
         
         self.d_g = config.D_MODEL // 8
         self.fc_gs = clones(nn.Linear(self.d_g, 1), 8)
+        self.layer_norm = nn.LayerNorm(config.D_MODEL)
 
         self.register_state('running_mask_self_attention', torch.zeros((1, 1, 0)).bool())
         self.register_state('running_seq', torch.zeros((1,)).long())
@@ -285,7 +286,7 @@ class IntegratedDecoder(Module):
     def forward(self, caption_tokens, features, boxes, padding_mask):
         
         # begin: cross attention preparation
-        relative_geometry_embeddings = box_relational_embedding(boxes, dim_g=self.d_g, trignometric_embedding=self.trignometric_embedding)
+        relative_geometry_embeddings = box_relational_embedding(boxes, dim_g=self.d_g, trignometric_embedding=True)
         flatten_relative_geometry_embeddings = relative_geometry_embeddings.view(-1, self.d_g)
         bs, nk, _, _ = relative_geometry_embeddings.shape
         box_size_per_head = [bs, 1, nk, nk]
