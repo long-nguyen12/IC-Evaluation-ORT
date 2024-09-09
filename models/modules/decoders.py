@@ -275,6 +275,9 @@ class IntegratedDecoder(Module):
                                                                             d_model=config.D_MODEL, padding_idx=0), freeze=True)
         self.layers = ModuleList([IntegratedDecoderLayer(config.ATTENTION) for _ in range(config.LAYERS)])
         self.fc = nn.Linear(config.D_MODEL, len(vocab), bias=False)
+        
+        self.d_g = config.D_MODEL // 8
+        self.fc_gs = clones(nn.Linear(self.d_g, 1), 8)
 
         self.register_state('running_mask_self_attention', torch.zeros((1, 1, 0)).bool())
         self.register_state('running_seq', torch.zeros((1,)).long())
