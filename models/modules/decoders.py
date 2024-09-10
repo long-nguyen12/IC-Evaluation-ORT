@@ -247,6 +247,8 @@ class IntegratedDecoderLayer(Module):
         self_att = self.self_attn(queries, queries, queries, padding_mask=self_padding_mask, attention_mask=self_attention_mask, **kwargs) 
         self_att = self_att
         
+        print(self_att.shape, keys.shape, values.shape, self_padding_mask.shape, self_attention_mask.shape)
+        
         region_att = self.region_attn(self_att, keys, keys, padding_mask=self_padding_mask, attention_mask=enc_attention_mask, **kwargs)
         feature_att = self.region_attn(self_att, values, values, padding_mask=self_padding_mask, attention_mask=enc_attention_mask, **kwargs)
 
