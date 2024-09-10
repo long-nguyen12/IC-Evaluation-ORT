@@ -49,9 +49,7 @@ class BaseTransformer(Module):
         beam_search = BeamSearch(model=self, max_len=self.max_len, eos_idx=self.eos_idx, beam_size=beam_size, 
                             b_s=batch_size, device=self.device)
         with self.statefulness(batch_size):
-            print(input_features)
             self.decoder_output = self.decoder_forward(input_features)
-            print(self.decoder_output.shape)
             output = beam_search.apply(out_size, return_probs, **kwargs)
 
         return output
