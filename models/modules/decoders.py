@@ -301,6 +301,8 @@ class IntegratedDecoder(Module):
         relative_geometry_weights = F.relu(relative_geometry_weights)
         
         out_feat = self.layer_norm(features) + self.pos_embedding(features)
+        e_b_s, nq = out_feat.shape[:2]
+        relative_geometry_weights = relative_geometry_weights.view(e_b_s, nq, self.d_model)
         # end: cross attentaiton preparation
         
         b_s, seq_len = caption_tokens.shape[:2]
