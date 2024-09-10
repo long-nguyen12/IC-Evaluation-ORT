@@ -31,7 +31,7 @@ class BaseTransformer(Module):
         raise NotImplementedError
 
     def step(self, t, prev_output):
-        bs = self.encoder_features.shape[0]
+        bs = self.region_features.shape[0]
         if t == 0:
             it = torch.zeros((bs, 1)).long().fill_(self.vocab.bos_idx).to(self.encoder_features.device)
         else:
@@ -39,8 +39,9 @@ class BaseTransformer(Module):
 
         output = self.decoder(
             caption_tokens=it,
-            encoder_features=self.encoder_features,
-            encoder_attention_mask=self.encoder_padding_mask
+            features=self.region_features,
+            boxes=self.region_boxes,
+            padding_mask=self.region_padding_mask,
         )
 
         return output
@@ -49,7 +50,7 @@ class BaseTransformer(Module):
         beam_search = BeamSearch(model=self, max_len=self.max_len, eos_idx=self.eos_idx, beam_size=beam_size, 
                             b_s=batch_size, device=self.device)
         with self.statefulness(batch_size):
-            self.decoder_output = self.encoder_forward(input_features)
+            self.region_features, self.region_padding_mask, self.region_boxes = self.encoder_forward(input_features)
             output = beam_search.apply(out_size, return_probs, **kwargs)
 
         return output

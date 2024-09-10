@@ -19,13 +19,9 @@ class ObjectRelationModel(BaseTransformer):
         self.decoder = build_decoder(config.DECODER, vocab)
 
     def forward(self, input_features):
-        return self.encoder_forward(input_features)
-
-    def encoder_forward(self, input_features):
-        region_features = input_features.visual
-        region_boxes = input_features.boxes
-
-        region_features, region_padding_mask = self.vision_embedding(region_features)
+        region_features, region_padding_mask, region_boxes = self.encoder_forward(
+            region_features
+        )
 
         caption_tokens = input_features.caption_tokens
         output = self.decoder(
@@ -36,6 +32,12 @@ class ObjectRelationModel(BaseTransformer):
         )
 
         return output
+
+    def encoder_forward(self, input_features):
+        region_features = input_features.visual
+        region_boxes = input_features.boxes
+        region_features, region_padding_mask = self.vision_embedding(region_features)
+        return region_features, region_padding_mask, region_boxes
 
     # def encoder_forward(self, input_features):
     #     region_features = input_features.visual
