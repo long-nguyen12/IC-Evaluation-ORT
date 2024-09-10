@@ -20,7 +20,7 @@ class ObjectRelationModel(BaseTransformer):
 
     def forward(self, input_features):
         region_features, region_padding_mask, region_boxes = self.encoder_forward(
-            region_features
+            input_features
         )
 
         caption_tokens = input_features.caption_tokens
