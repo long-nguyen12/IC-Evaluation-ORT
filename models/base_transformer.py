@@ -47,7 +47,7 @@ class BaseTransformer(Module):
                             b_s=batch_size, device=self.device)
 
         with self.statefulness(batch_size):
-            self.encoder_features, self.encoder_padding_mask = self.encoder_forward(input_features)
+            self.decoder_output = self.forward(input_features)
             output =  beam_search.apply(out_size, return_probs, **kwargs)
 
         return output
