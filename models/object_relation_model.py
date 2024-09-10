@@ -19,6 +19,9 @@ class ObjectRelationModel(BaseTransformer):
         self.decoder = build_decoder(config.DECODER, vocab)
 
     def forward(self, input_features):
+        return self.decoder_forward(input_features)
+
+    def decoder_forward(self, input_features):
         region_features = input_features.visual
         region_boxes = input_features.boxes
 

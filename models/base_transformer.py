@@ -23,6 +23,9 @@ class BaseTransformer(Module):
 
     def encoder_forward(self, input_features: InstanceList):
         raise NotImplementedError
+    
+    def decoder_forward(self, input_features):
+        raise NotImplementedError
 
     def forward(self, input_features: InstanceList):
         raise NotImplementedError
@@ -47,7 +50,7 @@ class BaseTransformer(Module):
                             b_s=batch_size, device=self.device)
 
         with self.statefulness(batch_size):
-            self.decoder_output = self.forward(input_features)
+            self.decoder_output = self.decoder_forward(input_features)
             output =  beam_search.apply(out_size, return_probs, **kwargs)
 
         return output
