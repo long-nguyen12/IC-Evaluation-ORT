@@ -23,7 +23,8 @@ class DecoderLayer(Module):
         self.pwff = PositionWiseFeedForward(config.ENC_ATTENTION)
 
     def forward(self, queries, keys, values, self_padding_mask, self_attention_mask, enc_attention_mask, **kwargs):
-        self_att = self.self_attn(queries, queries, queries, padding_mask=self_padding_mask, attention_mask=self_attention_mask, **kwargs)        
+        self_att = self.self_attn(queries, queries, queries, padding_mask=self_padding_mask, attention_mask=self_attention_mask, **kwargs)
+        print(self_att, enc_attention_mask)
         enc_att = self.enc_attn(self_att, keys, values, padding_mask=self_padding_mask, attention_mask=enc_attention_mask, **kwargs)
         
         ff = self.pwff(enc_att)
@@ -246,8 +247,6 @@ class IntegratedDecoderLayer(Module):
     def forward(self, queries, keys, values, self_padding_mask, self_attention_mask, enc_attention_mask, **kwargs):
         self_att = self.self_attn(queries, queries, queries, padding_mask=self_padding_mask, attention_mask=self_attention_mask, **kwargs)            
         region_att = self.region_attn(self_att, keys, keys, padding_mask=self_padding_mask, attention_mask=enc_attention_mask, **kwargs)
-        
-        print(self_att.shape)
         feature_att = self.region_attn(self_att, values, values, padding_mask=self_padding_mask, attention_mask=enc_attention_mask, **kwargs)
 
         enc_att = (region_att + feature_att) / np.sqrt(2)
