@@ -251,7 +251,6 @@ class IntegratedDecoderLayer(Module):
         feature_att = self.region_attn(self_att, values, values, padding_mask=self_padding_mask, attention_mask=enc_attention_mask, **kwargs)
 
         enc_att = (region_att + feature_att) / np.sqrt(2)
-        enc_att = enc_att
 
         ff = self.pwff(enc_att)
         ff = ff.masked_fill(self_padding_mask.squeeze(1).squeeze(1).unsqueeze(-1), value=0)
