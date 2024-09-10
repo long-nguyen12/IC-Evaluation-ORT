@@ -21,7 +21,7 @@ DATASET:
     DEV: features/KTIVC/test_data.json
     TEST: features/KTIVC/test_data.json
   FEATURE_PATH:
-    FEATURES: features/KTIVC/KTVIC_train_features_swint
+    FEATURES: features/KTIVC/KTIVC_feature
     SCENE_TEXT: null
     IMAGE: null
 
