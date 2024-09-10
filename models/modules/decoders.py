@@ -303,7 +303,7 @@ class IntegratedDecoder(Module):
         out_feat = self.layer_norm(features) + self.pos_embedding(features)
         e_b_s, nq = out_feat.shape[:2]
         
-        out_feat_v = out_feat.view(b_s, nk, self.h, self.d_v).permute(0, 2, 1, 3)
+        out_feat_v = out_feat.view(e_b_s, nk, self.h, self.d_v).permute(0, 2, 1, 3)
         relative_geometry_weights = torch.matmul(relative_geometry_weights, out_feat_v).permute(0, 2, 1, 3).contiguous().view(e_b_s, nq, self.d_model)
         # end: cross attentaiton preparation
         
