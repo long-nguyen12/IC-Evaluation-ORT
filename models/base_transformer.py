@@ -36,7 +36,7 @@ class BaseTransformer(Module):
             it = torch.zeros((bs, 1)).long().fill_(self.vocab.bos_idx).to(self.device)
         else:
             it = prev_output
-
+        print(it.shape)
         output = self.decoder(
             caption_tokens=it,
             features=self.region_features,
