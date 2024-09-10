@@ -33,7 +33,7 @@ class BaseTransformer(Module):
     def step(self, t, prev_output):
         bs = self.region_features.shape[0]
         if t == 0:
-            it = torch.zeros((bs, 1)).long().fill_(self.vocab.bos_idx).to(self.encoder_features.device)
+            it = torch.zeros((bs, 1)).long().fill_(self.vocab.bos_idx).to(self.device)
         else:
             it = prev_output
 
