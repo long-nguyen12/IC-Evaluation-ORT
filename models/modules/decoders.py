@@ -293,7 +293,7 @@ class IntegratedDecoder(Module):
         relative_geometry_weights = F.relu(relative_geometry_weights)
         
         out_feat = self.layer_norm(features) + self.pos_embedding(features)
-        print(out_feat.shape)
+        print(features.shape, out_feat.shape)
         e_b_s, nq = out_feat.shape[:2]
         
         out_feat_v = out_feat.view(e_b_s, nk, 8, 64).permute(0, 2, 1, 3)

@@ -49,7 +49,7 @@ class ScaledDotProductAttention(nn.Module):
         v = self.fc_v(values).view(b_s, nk, self.h, self.d_v).permute(0, 2, 1, 3)  # (b_s, h, nk, d_v)
 
         att = torch.matmul(q, k) / np.sqrt(self.d_k)  # (b_s, h, nq, nk)
-        print("q:", q.shape, "k: ", k.shape, "v: ", v.shape, "att: ", att.shape, "mask: ", attention_mask.shape)
+        
         if attention_mask is not None:
             att = att.masked_fill(attention_mask, -np.inf)
         att = torch.softmax(att, dim=-1)
