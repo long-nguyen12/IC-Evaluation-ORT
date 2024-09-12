@@ -44,11 +44,11 @@ class ScaledDotProductAttention(nn.Module):
     def forward(self, queries, keys, values, attention_mask=None):
         b_s, nq = queries.shape[:2]
         nk = keys.shape[1]
-        print(values.shape)
+        # print(values.shape)
         q = self.fc_q(queries).view(b_s, nq, self.h, self.d_k).permute(0, 2, 1, 3)  # (b_s, h, nq, d_k)
         k = self.fc_k(keys).view(b_s, nk, self.h, self.d_k).permute(0, 2, 3, 1)  # (b_s, h, d_k, nk)
         v = self.fc_v(values).view(b_s, nk, self.h, self.d_v).permute(0, 2, 1, 3)  # (b_s, h, nk, d_v)
-        print(v.shape)
+        # print(v.shape)
         att = torch.matmul(q, k) / np.sqrt(self.d_k)  # (b_s, h, nq, nk)
         
         if attention_mask is not None:
@@ -302,7 +302,7 @@ class MultiHeadAttention(Module):
 
             self.running_values = torch.cat([self.running_values, values], 1)
             values = self.running_values
-        print(values.shape)
+        # print(values.shape)
         out = self.attention(queries, keys, values, attention_mask=attention_mask, **kwargs)
         # out = out.masked_fill(padding_mask.squeeze(1).squeeze(1).unsqueeze(-1), value=0)
         

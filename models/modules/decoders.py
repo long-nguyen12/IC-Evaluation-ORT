@@ -247,7 +247,7 @@ class IntegratedDecoderLayer(Module):
     def forward(self, queries, keys, values, self_padding_mask, self_attention_mask, enc_attention_mask, **kwargs):
         self_att = self.self_attn(queries, queries, queries, padding_mask=self_padding_mask, attention_mask=self_attention_mask, **kwargs)            
         region_att = self.region_attn(self_att, keys, keys, padding_mask=self_padding_mask, attention_mask=enc_attention_mask, **kwargs)
-        feature_att = self.region_attn(self_att, values, values, padding_mask=self_padding_mask, attention_mask=enc_attention_mask, **kwargs)
+        feature_att = self.feature_attn(self_att, values, values, padding_mask=self_padding_mask, attention_mask=enc_attention_mask, **kwargs)
 
         enc_att = (region_att + feature_att) / np.sqrt(2)
 
@@ -294,7 +294,7 @@ class IntegratedDecoder(Module):
         
         out_feat = self.layer_norm(features) + self.pos_embedding(features)
         e_b_s, nq = out_feat.shape[:2]
-        print("starting: feature:", features.shape, "out_feat:", out_feat.shape)
+        # print("starting: feature:", features.shape, "out_feat:", out_feat.shape)
         
         out_feat_v = out_feat.view(e_b_s, nk, 8, 64).permute(0, 2, 1, 3)
         relative_geometry_weights = torch.matmul(relative_geometry_weights, out_feat_v).permute(0, 2, 1, 3).contiguous().view(e_b_s, nq, self.d_model)
