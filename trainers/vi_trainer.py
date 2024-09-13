@@ -83,7 +83,7 @@ class viTrainer(BaseTrainer):
             for it, items in enumerate(dataloader):
                 items = items.to(self.device)
                 with torch.no_grad():
-                    print(items.shape)
+                    print(items)
                     outs = self.model.beam_search(items, batch_size=items.batch_size, beam_size=self.evaluating_beam_size, out_size=1)
 
                 caps_gt = items.captions
