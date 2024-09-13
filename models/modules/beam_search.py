@@ -19,7 +19,7 @@ class BeamSearch(object):
     def _expand_state(self, selected_beam, cur_beam_size):
         
         def fn(s):
-            print(s)
+            print(s.shape)
             shape = [int(sh) for sh in s.shape]
             beam = selected_beam
             for _ in shape[1:]:
@@ -58,7 +58,7 @@ class BeamSearch(object):
         selected_idx, selected_logprob = self.select(candidate_logprob)
         selected_beam = torch.div(selected_idx, candidate_logprob.shape[-1], rounding_mode="trunc")
         selected_words = selected_idx - selected_beam * candidate_logprob.shape[-1]
-        print(selected_beam, cur_beam_size)
+        
         self.model.apply_to_states(self._expand_state(selected_beam, cur_beam_size))
 
         self.seq_logprob = selected_logprob.unsqueeze(-1)

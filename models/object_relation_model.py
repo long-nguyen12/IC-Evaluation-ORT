@@ -38,17 +38,3 @@ class ObjectRelationModel(BaseTransformer):
         region_boxes = input_features.boxes
         region_features, region_padding_mask = self.vision_embedding(region_features)
         return region_features, region_padding_mask, region_boxes
-
-    # def encoder_forward(self, input_features):
-    #     region_features = input_features.visual
-    #     region_boxes = input_features.boxes
-
-    #     region_features, region_padding_mask = self.vision_embedding(region_features)
-
-    #     encoder_features = self.encoder(
-    #         features=region_features,
-    #         padding_mask=region_padding_mask,
-    #         boxes=region_boxes,
-    #     )
-
-    #     return encoder_features, region_padding_mask
