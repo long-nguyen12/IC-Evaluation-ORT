@@ -87,7 +87,8 @@ class viTrainer(BaseTrainer):
                     outs = self.model(items).contiguous()
                 print(outs.view(-1, self.vocab.max_caption_length))
                 caps_gt = items.captions
-                caps_gen = self.vocab.decode_caption(outs, join_words=False)
+                print(caps_gt)
+                caps_gen = self.vocab.decode_caption(outs.view(-1, self.vocab.max_caption_length), join_words=False)
                 print(caps_gen)
                 for i, (gts_i, gen_i) in enumerate(zip(caps_gt, caps_gen)):
                     gen_i = ' '.join([k for k, g in itertools.groupby(gen_i)])
