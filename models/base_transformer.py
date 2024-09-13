@@ -13,8 +13,11 @@ class BaseTransformer(Module):
         self.max_len = vocab.max_caption_length
         self.eos_idx = vocab.eos_idx
 
-        self.register_state('encoder_features', None)
-        self.register_state('encoder_padding_mask', None)
+        # self.register_state('encoder_features', None)
+        # self.register_state('encoder_padding_mask', None)
+        self.register_state('region_features', None)
+        self.register_state('region_padding_mask', None)
+        self.register_state('region_boxes', None)
 
     def init_weights(self):
         for p in self.parameters():
