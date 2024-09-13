@@ -19,7 +19,6 @@ class BeamSearch(object):
     def _expand_state(self, selected_beam, cur_beam_size):
         
         def fn(s):
-            print(s.shape)
             shape = [int(sh) for sh in s.shape]
             beam = selected_beam
             for _ in shape[1:]:

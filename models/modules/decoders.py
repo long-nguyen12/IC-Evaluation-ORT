@@ -24,7 +24,6 @@ class DecoderLayer(Module):
 
     def forward(self, queries, keys, values, self_padding_mask, self_attention_mask, enc_attention_mask, **kwargs):
         self_att = self.self_attn(queries, queries, queries, padding_mask=self_padding_mask, attention_mask=self_attention_mask, **kwargs)
-        print(self_att.shape, enc_attention_mask.shape)
         enc_att = self.enc_attn(self_att, keys, values, padding_mask=self_padding_mask, attention_mask=enc_attention_mask, **kwargs)
         
         ff = self.pwff(enc_att)
