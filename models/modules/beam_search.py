@@ -83,6 +83,8 @@ class BeamSearch(object):
         return outputs
 
     def apply(self, out_size=1, return_probs=False, **kwargs):
+        for i, v in kwargs.items():
+            print ("    ", i, ": ", v)
         self.seq_mask = torch.ones((self.b_s, self.beam_size, 1), device=self.device)
         self.seq_logprob = torch.zeros((self.b_s, 1, 1), device=self.device)
         self.log_probs = []
