@@ -109,16 +109,19 @@ class Vocab(object):
             caption_vecs: (bs, max_length)
         '''
         captions = []
-        for wis in caption_vecs:
-            caption = []
-            for wi in wis:
-                word = self.vocab.itos[int(wi)]
-                if word == self.eos_token:
+        for vec in caption_vecs:
+            words = []
+            for idx in vec.tolist():
+                if self.itos[int(idx)] not in self.specials:
+                    words.append(self.itos[idx])
+                if idx == self.eos_idx:
                     break
-                caption.append(word)
+            caption = " ".join(words)
             if join_words:
-                caption = ' '.join(caption)
-            captions.append(caption)
+                captions.append(caption)
+            else:
+                captions.append(caption.strip().split())
+
         return captions
 
     def __eq__(self, other):
