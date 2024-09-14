@@ -85,10 +85,12 @@ class viTrainer(BaseTrainer):
                 with torch.no_grad():
                     # outs = self.model.beam_search(items, batch_size=items.batch_size, beam_size=self.evaluating_beam_size, out_size=1)
                     outs = self.model(items).contiguous()
-                print(outs.view(-1, self.vocab.max_caption_length))
+                print(outs.shape)
+                outs = outs.view(-1, self.vocab.max_caption_length)
+                print(outs.shape)
                 caps_gt = items.captions
                 print(caps_gt)
-                caps_gen = self.vocab.decode_caption(outs.view(-1, self.vocab.max_caption_length), join_words=False)
+                caps_gen = self.vocab.decode_caption(outs, join_words=False)
                 print(caps_gen)
                 for i, (gts_i, gen_i) in enumerate(zip(caps_gt, caps_gen)):
                     gen_i = ' '.join([k for k, g in itertools.groupby(gen_i)])
