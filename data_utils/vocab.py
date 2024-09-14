@@ -113,7 +113,7 @@ class Vocab(object):
             words = []
             for idx in vec.tolist():
                 if self.itos[int(idx)] not in self.specials:
-                    words.append(self.itos[idx])
+                    words.append(self.itos[int(idx)])
                 if idx == self.eos_idx:
                     break
             caption = " ".join(words)
