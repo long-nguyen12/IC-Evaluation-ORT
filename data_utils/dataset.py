@@ -75,12 +75,14 @@ class FeatureDataset(data.Dataset):
         shifted_right_caption = torch.zeros_like(caption).fill_(self.vocab.padding_idx)
         shifted_right_caption[:-1] = caption[1:]
         caption = torch.where(caption == self.vocab.eos_idx, self.vocab.padding_idx, caption) # remove eos_token in caption
-        
-        # features = self.load_features(self.annotations[idx]["image_id"])
-        
+
+        # filename = self.annotations[idx]["filename"]
+        # visual = self.load_feature(filename.replace('.jpg',''))
+        # boxes = self.load_boxes(filename.replace('.jpg',''))
+
         visual = self.load_feature(self.annotations[idx]["image_id"])
         boxes = self.load_boxes(self.annotations[idx]["image_id"])
-        return Instance(caption_tokens=caption, shifted_right_caption_tokens=shifted_right_caption, visual=visual, boxes=boxes)
+        return Instance(caption_tokens=caption, shifted_right_caption_tokens=shifted_right_caption, visual=visual, boxes=boxes, captions=item["caption"])
         # return Instance(
         #     caption_tokens=caption,
         #     shifted_right_caption_tokens=shifted_right_caption,
@@ -109,13 +111,13 @@ class DictionaryDataset(data.Dataset):
         
     #     return features
 
-    def load_features(self, image_id: int) -> np.ndarray:
+    def load_features(self, image_id) -> np.ndarray:
         feature_file = os.path.join(self.image_features_path, f"{image_id}.npz")
         feature = np.load(feature_file, allow_pickle=True)["features"].copy()
 
         return feature
 
-    def load_boxes(self, image_id: int) -> np.ndarray:
+    def load_boxes(self, image_id) -> np.ndarray:
         feature_file = os.path.join(self.image_features_path, f"{image_id}.npz")
         boxes = np.load(feature_file, allow_pickle=True)["bbox"].copy()
 
@@ -155,6 +157,9 @@ class DictionaryDataset(data.Dataset):
         #     captions=captions,
         #     **features
         # )
+
+        # visual = self.load_features(filename.replace('.jpg',''))
+        # boxes = self.load_boxes(filename.replace('.jpg',''))
 
         visual = self.load_features(image_id)
         boxes = self.load_boxes(image_id)

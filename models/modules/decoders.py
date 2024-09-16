@@ -238,17 +238,21 @@ class IntegratedDecoderLayer(Module):
         super(IntegratedDecoderLayer, self).__init__()
 
         self.self_attn = MultiHeadAttention(config.SELF_ATTENTION)
-        self.region_attn = MultiHeadAttention(config.SELF_ATTENTION)
-        self.feature_attn = MultiHeadAttention(config.SELF_ATTENTION)
+        self.region_attn = MultiHeadAttention(config.ENC_ATTENTION)
+        self.feature_attn = MultiHeadAttention(config.ENC_ATTENTION)
         
         self.pwff = PositionWiseFeedForward(config.ENC_ATTENTION)
+        # print(config)
+        # self.norm2 = nn.LayerNorm(config.D_MODEL)
 
     def forward(self, queries, keys, values, self_padding_mask, self_attention_mask, enc_attention_mask, **kwargs):
         self_att = self.self_attn(queries, queries, queries, padding_mask=self_padding_mask, attention_mask=self_attention_mask, **kwargs)
+        # print(self_att.shape, queries.shape, keys.shape)
         region_att = self.region_attn(self_att, keys, keys, padding_mask=self_padding_mask, attention_mask=enc_attention_mask, **kwargs)
         feature_att = self.feature_attn(self_att, values, values, padding_mask=self_padding_mask, attention_mask=enc_attention_mask, **kwargs)
 
-        enc_att = (region_att + feature_att) / np.sqrt(2)
+        enc_att = region_att + feature_att
+        # enc_att = self.norm2(region_att + feature_att)
 
         ff = self.pwff(enc_att)
         ff = ff.masked_fill(self_padding_mask.squeeze(1).squeeze(1).unsqueeze(-1), value=0)

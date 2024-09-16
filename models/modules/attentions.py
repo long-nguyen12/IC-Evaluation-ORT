@@ -110,7 +110,6 @@ class AugmentedGeometryScaledDotProductAttention(nn.Module):
         mn = torch.log(torch.clamp(g, min = 1e-6)) + a
         mn = torch.softmax(mn, dim=-1)
         out = torch.matmul(mn, v).permute(0, 2, 1, 3).contiguous().view(b_s, nq, self.h * self.d_v)  # (b_s, nq, h*d_v)
-        print(v.shape, relative_geometry_weights.shape, out.shape)
         out = self.fc_o(out)  # (b_s, nq, d_model)
 
         return out
@@ -302,7 +301,7 @@ class MultiHeadAttention(Module):
 
             self.running_values = torch.cat([self.running_values, values], 1)
             values = self.running_values
-        # print(values.shape)
+        # print(queries.shape, keys.shape, values.shape, attention_mask.shape)
         out = self.attention(queries, keys, values, attention_mask=attention_mask, **kwargs)
         # out = out.masked_fill(padding_mask.squeeze(1).squeeze(1).unsqueeze(-1), value=0)
         

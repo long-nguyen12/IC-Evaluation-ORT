@@ -13,11 +13,11 @@ class BaseTransformer(Module):
         self.max_len = vocab.max_caption_length
         self.eos_idx = vocab.eos_idx
 
-        # self.register_state('encoder_features', None)
-        # self.register_state('encoder_padding_mask', None)
-        self.register_state('region_features', None)
-        self.register_state('region_padding_mask', None)
-        self.register_state('region_boxes', None)
+        self.register_state('encoder_features', None)
+        self.register_state('encoder_padding_mask', None)
+        # self.register_state('region_features', None)
+        # self.register_state('region_padding_mask', None)
+        # self.register_state('region_boxes', None)
 
     def init_weights(self):
         for p in self.parameters():
@@ -33,41 +33,18 @@ class BaseTransformer(Module):
     def forward(self, input_features: InstanceList):
         raise NotImplementedError
 
-    def step(self, t, prev_output):
-        bs = self.region_features.shape[0]
-        if t == 0:
-            it = torch.zeros((bs, 1)).long().fill_(self.vocab.bos_idx).to(self.device)
-        else:
-            it = prev_output
-        
-        output = self.decoder(
-            caption_tokens=it,
-            features=self.region_features,
-            boxes=self.region_boxes,
-            padding_mask=self.region_padding_mask,
-        )
-
-        return output
-
-    def beam_search(self, input_features: InstanceList, batch_size: int, beam_size: int, out_size=1, return_probs=False, **kwargs):
-        beam_search = BeamSearch(model=self, max_len=self.max_len, eos_idx=self.eos_idx, beam_size=beam_size, 
-                            b_s=batch_size, device=self.device)
-        with self.statefulness(batch_size):
-            self.region_features, self.region_padding_mask, self.region_boxes = self.encoder_forward(input_features)
-            output = beam_search.apply(out_size, return_probs, **kwargs)
-        print(output)
-        return output
     # def step(self, t, prev_output):
-    #     bs = self.encoder_features.shape[0]
+    #     bs = self.region_features.shape[0]
     #     if t == 0:
-    #         it = torch.zeros((bs, 1)).long().fill_(self.vocab.bos_idx).to(self.encoder_features.device)
+    #         it = torch.zeros((bs, 1)).long().fill_(self.vocab.bos_idx).to(self.device)
     #     else:
     #         it = prev_output
-
+        
     #     output = self.decoder(
     #         caption_tokens=it,
-    #         encoder_features=self.encoder_features,
-    #         encoder_attention_mask=self.encoder_padding_mask
+    #         features=self.region_features,
+    #         boxes=self.region_boxes,
+    #         padding_mask=self.region_padding_mask,
     #     )
 
     #     return output
@@ -75,9 +52,33 @@ class BaseTransformer(Module):
     # def beam_search(self, input_features: InstanceList, batch_size: int, beam_size: int, out_size=1, return_probs=False, **kwargs):
     #     beam_search = BeamSearch(model=self, max_len=self.max_len, eos_idx=self.eos_idx, beam_size=beam_size, 
     #                         b_s=batch_size, device=self.device)
-
     #     with self.statefulness(batch_size):
-    #         self.encoder_features, self.encoder_padding_mask = self.encoder_forward(input_features)
-    #         output =  beam_search.apply(out_size, return_probs, **kwargs)
+    #         self.region_features, self.region_padding_mask, self.region_boxes = self.encoder_forward(input_features)
+    #         output = beam_search.apply(out_size, return_probs, **kwargs)
 
     #     return output
+
+    def step(self, t, prev_output):
+        bs = self.encoder_features.shape[0]
+        if t == 0:
+            it = torch.zeros((bs, 1)).long().fill_(self.vocab.bos_idx).to(self.encoder_features.device)
+        else:
+            it = prev_output
+
+        output = self.decoder(
+            caption_tokens=it,
+            encoder_features=self.encoder_features,
+            encoder_attention_mask=self.encoder_padding_mask
+        )
+
+        return output
+
+    def beam_search(self, input_features: InstanceList, batch_size: int, beam_size: int, out_size=1, return_probs=False, **kwargs):
+        beam_search = BeamSearch(model=self, max_len=self.max_len, eos_idx=self.eos_idx, beam_size=beam_size, 
+                            b_s=batch_size, device=self.device)
+
+        with self.statefulness(batch_size):
+            self.encoder_features, self.encoder_padding_mask = self.encoder_forward(input_features)
+            output =  beam_search.apply(out_size, return_probs, **kwargs)
+
+        return output
