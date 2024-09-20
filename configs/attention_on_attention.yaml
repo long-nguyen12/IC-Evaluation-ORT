@@ -17,16 +17,16 @@ DATASET:
     USE_MAPPING: False
     PRETRAINED_LANGUAGE_MODEL: null
   JSON_PATH:
-    TRAIN: features/OpenViIC/annotations/uit-openviic-train.json
-    DEV: features/OpenViIC/annotations/uit-openviic-dev.json
-    TEST: features/OpenViIC/annotations/uit-openviic-test.json
+    TRAIN: features/KTIVC/train_data.json
+    DEV: features/KTIVC/test_data.json
+    TEST: features/KTIVC/test_data.json
   FEATURE_PATH:
-    FEATURES: features/OpenViIC/features/x152++_faster_rcnn
+    FEATURES: features/KTIVC/KTIVC_feature
     SCENE_TEXT: null
     IMAGE: null
 
 TRAINING:
-  CHECKPOINT_PATH: saved_models
+  CHECKPOINT_PATH: saved_models/AOA/
   LEARNING_RATE: 1.
   RL_LEARNING_RATE: 0.000005
   WARMUP: 10000

@@ -101,7 +101,7 @@ class viTrainer(BaseTrainer):
 
     def train(self):
         self.model.train()
-
+        
         running_loss = .0
         with tqdm(desc='Epoch %d - Training with cross-entropy loss' % self.epoch, unit='it', total=len(self.train_dataloader)) as pbar:
             for it, items in enumerate(self.train_dataloader):

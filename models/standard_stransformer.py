@@ -31,7 +31,7 @@ class StandardTransformerUsingRegion(BaseTransformer):
         return output
 
     def encoder_forward(self, input_features: Instance):
-        vision_features = input_features.region_features
+        vision_features = input_features.boxes
         vision_features, vision_padding_mask = self.vision_embedding(vision_features)
 
         encoder_features = self.encoder(

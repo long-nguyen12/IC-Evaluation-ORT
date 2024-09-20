@@ -30,7 +30,7 @@ class MeshedMemoryTransformer(BaseTransformer):
         return output
 
     def encoder_forward(self, input_features):
-        vision_features = input_features.region_features
+        vision_features = input_features.visual
         vision_features, vision_padding_mask = self.vision_embedding(vision_features)
 
         encoder_features = self.encoder(
