@@ -7,7 +7,7 @@ from utils.logging_utils import setup_logger
 logger = setup_logger()
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--config-file", type=str, default="configs/meshed_memory_transformer.yaml")
+parser.add_argument("--config-file", type=str, default="configs/object_relation_transformer_custom-uit.yaml")
 
 args = parser.parse_args()
 
