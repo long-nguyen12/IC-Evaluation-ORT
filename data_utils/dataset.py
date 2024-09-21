@@ -37,7 +37,7 @@ class FeatureDataset(data.Dataset):
                             ann["caption"], self.vocab.tokenizer
                         ),
                         "image_id": ann["image_id"],
-                        "filename": image["filename"],
+                        "filename": image["file_name"],
                     }
                     break
 
@@ -76,12 +76,12 @@ class FeatureDataset(data.Dataset):
             caption == self.vocab.eos_idx, self.vocab.padding_idx, caption
         )  # remove eos_token in caption
 
-        # filename = self.annotations[idx]["filename"]
-        # visual = self.load_feature(filename.replace('.jpg',''))
-        # boxes = self.load_boxes(filename.replace('.jpg',''))
+        filename = self.annotations[idx]["filename"]
+        visual = self.load_feature(filename.replace('.jpg',''))
+        boxes = self.load_boxes(filename.replace('.jpg',''))
 
-        visual = self.load_feature(self.annotations[idx]["image_id"])
-        boxes = self.load_boxes(self.annotations[idx]["image_id"])
+        # visual = self.load_feature(self.annotations[idx]["image_id"])
+        # boxes = self.load_boxes(self.annotations[idx]["image_id"])
         return Instance(
             caption_tokens=caption,
             shifted_right_caption_tokens=shifted_right_caption,
@@ -130,7 +130,7 @@ class DictionaryDataset(data.Dataset):
         filenames = {}
         for image in json_data["images"]:
             examples[image["id"]] = []
-            filenames[image["id"]] = image["filename"]
+            filenames[image["id"]] = image["file_name"]
 
         for ann in json_data["annotations"]:
             caption = preprocess_caption(ann["caption"], self.vocab.tokenizer)
@@ -150,11 +150,11 @@ class DictionaryDataset(data.Dataset):
         filename = self.filenames[idx]
         captions = self.captions_with_image[idx]
 
-        # visual = self.load_features(filename.replace('.jpg',''))
-        # boxes = self.load_boxes(filename.replace('.jpg',''))
+        visual = self.load_features(filename.replace('.jpg',''))
+        boxes = self.load_boxes(filename.replace('.jpg',''))
 
-        visual = self.load_features(image_id)
-        boxes = self.load_boxes(image_id)
+        # visual = self.load_features(image_id)
+        # boxes = self.load_boxes(image_id)
         return Instance(
             filename=filename, captions=captions, visual=visual, boxes=boxes
         )
