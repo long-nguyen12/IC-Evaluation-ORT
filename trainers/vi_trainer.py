@@ -271,7 +271,7 @@ class viTrainer(BaseTrainer):
                 })
                 
                 outputs = {
-                    results: results
+                    "results": results
                 }
                 with open("outputs.json", "w") as f:
                     json.dump(outputs, f)
