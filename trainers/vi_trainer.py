@@ -269,6 +269,12 @@ class viTrainer(BaseTrainer):
                     "gens": gens,
                     "gts": gts,
                 })
+                
+                outputs = {
+                    results: results
+                }
+                with open("outputs.json", "w") as f:
+                    json.dump(outputs, f)
 
                 pbar.update()
 
