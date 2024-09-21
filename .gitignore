@@ -11,3 +11,7 @@ vocab.json
 visualize.py
 saved_models_KTIVC*
 *.zip
+
+*.pth
+
+*.bin
