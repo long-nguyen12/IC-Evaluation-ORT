@@ -17,11 +17,11 @@ DATASET:
     USE_MAPPING: False
     PRETRAINED_LANGUAGE_MODEL: null
   JSON_PATH:
-    TRAIN: features/KTIVC/train_data.json
-    DEV: features/KTIVC/test_data.json
-    TEST: features/KTIVC/test_data.json
+    TRAIN: features/UIT-ViIC/uitviic_captions_train2017.json
+    DEV: features/UIT-ViIC/uitviic_captions_val2017.json
+    TEST: features/UIT-ViIC/uitviic_captions_test2017.json
   FEATURE_PATH:
-    FEATURES: features/KTIVC/KTIVC_feature
+    FEATURES: features/UIT-ViIC/UIT-ViIC
     SCENE_TEXT: null
     IMAGE: null
 
